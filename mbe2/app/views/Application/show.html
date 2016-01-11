@@ -1,0 +1,18 @@
+#{extends 'main.html' /}
+#{set title:'MBE' /}
+
+<h1>내가 만든 블로그</h1>
+
+<div class="post">
+    <h2 class="post-title">
+        <a href="">${post.title}</a>
+    </h2>
+    <div class="post-metadata">
+        <span class="post-author">by ${post.author.fullname}</span>,
+        <span class="post-date">${post.postedAt.format('yyyy년 MM월 dd일')}</span>
+    </div>
+    <div class="post-content">
+        <div class="about">내용: </div>
+        ${post.content.nl2br()}
+    </div>
+</div>

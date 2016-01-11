@@ -1,0 +1,69 @@
+#{extends 'main.html' /}
+#{set title:'MBE' /}
+
+<ul id="pagination">
+    #{if post.previous()}
+        <li id="previous">
+            <a href="@{Application.show(post.previous().id)}">
+                ${post.previous().title}
+            </a>
+        </li>
+    #{/if}
+    #{if post.next()}
+        <li id="next">
+            <a href="@{Application.show(post.next().id)}">
+                ${post.next().title}
+            </a>
+        </li>
+    #{/if}
+</ul>
+
+<div class="post ${_as == 'teaser' ? 'teaser' : ''}">
+    <h2 class="post-title">
+        <a href="">${post.title}</a>
+    </h2>
+    <div class="post-metadata">
+        <span class="post-author">by ${post.author.fullname}</span>,
+        <span class="post-date">${post.postedAt.format('dd MMM yy')}</span>
+    </div>
+    <div class="post-content">
+        <div class="about">Detail: </div>
+        ${post.content.nl2br()}
+    </div>
+</div>
+  
+<div class="comments">
+    <h3>
+        ${post.comments.size() ?: 'no'} 
+        comment${post.comments.size().pluralize()}
+    </h3>
+     
+    #{list items:post.comments, as:'comment'}
+        <div class="comment">
+            <div class="comment-metadata">
+                <span class="comment-author">by ${comment.author},</span>
+                <span class="comment-date">
+                    ${comment.postedAt.format('dd MMM yy')}
+                </span>
+            </div>
+            <div class="comment-content">
+                <div class="about">Detail: </div>
+                ${comment.content.escape().nl2br()}
+            </div>
+        </div>
+    #{/list}
+</div>
+<script type="text/javascript" charset="utf-8">
+    $(function() {         
+        // Expose the form 
+        $('form').click(function() { 
+            $('form').expose({api: true}).load(); 
+        }); 
+         
+        // If there is an error, focus to form
+        if($('form .error').size()) {
+            $('form').expose({api: true, loadSpeed: 0}).load(); 
+            $('#author').focus();
+        }
+    });
+</script>
